@@ -1,17 +1,17 @@
 // components/Modal.js
 import { useState } from "react";
 import { FaStar, FaTimes } from "react-icons/fa"; // Importing icons from react-icons
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
-import { auth } from "../lib/firebase";
+// import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+// import { auth } from "../lib/firebase";
 
-const googleProvider = new GoogleAuthProvider();
+// const googleProvider = new GoogleAuthProvider();
 
 const Modal = ({ show, onClose }) => {
   
   const loginWithGoogle = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider)
-      console.log('res', result)
+      // const result = await signInWithPopup(auth, googleProvider)
+      // console.log('res', result)
       // const credential = GoogleAuthProvider.credentialFromResult(result);
       // const token = credential.accessToken;
       // // The signed-in user info.
