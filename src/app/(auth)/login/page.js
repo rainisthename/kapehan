@@ -2,31 +2,31 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PuffLoader } from "react-spinners";
-import { useAuth } from "../context/authContext"; // Import the context to access login
-import { loginUser } from "../context/authAction"; // Import the login action
-import Cookies from "js-cookie"; // Ensure this import is present at the top
+import { createClient } from "@/utils/supabase/client";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { dispatch } = useAuth(); // Access the dispatch function from context
   const router = useRouter();
+  const supabase = createClient()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     // Basic form validation
-    if (!username || !password) {
+    if (!email || !password) {
       return alert("Please fill in both fields.");
     }
 
-    setIsLoading(true);
-
     try {
-      // Call loginUser with dispatch, credentials, and router
-      await loginUser(dispatch, { username, password }, router);
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      if (error) {
+        console.error(error)
+      }
+      router.push('/')
     } catch (error) {
       console.error("Login failed:", error);
     } finally {
@@ -38,23 +38,23 @@ export default function Login() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {/* username Input */}
+          {/* email Input */}
           <div>
             <label
-              htmlFor="username"
+              htmlFor="email"
               className="block text-sm font-poppins-medium text-gray-700"
             >
-              username Address
+              Email Address
             </label>
             <input
-              type="username"
-              id="username"
-              name="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-400"
-              placeholder="Enter your username"
+              placeholder="Enter your email"
             />
           </div>
 

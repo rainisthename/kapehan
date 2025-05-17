@@ -1,55 +1,39 @@
-"use client";
 import Image from "next/image";
-import coffeeShop from "../../public/images/coffeeshop.jpg"; // Replace with your actual image paths
-import { useState } from "react";
-import Footer from "./components/Footer";
-import { SkeletonLoader } from "./components/SkeletonLoader";
-import Head from "next/head"; // Import Head
-import Link from "next/link"; // Import Link
+// import coffeeShop from "/images/coffeeshop.jpg";
+import Link from "next/link";
 
-const CoffeeCard = ({ card }) => {
-
-  const imageUrl = "https://storage.googleapis.com/kapehan-production.firebasestorage.app/shops/maikee.jpg?GoogleAccessId=firebase-adminsdk-x5nd9%40kapehan-production.iam.gserviceaccount.com&Expires=16446988800&Signature=HsRH45%2F4rvW5UUyrAzkIh%2BUSVqNi5yBkpX1KzFa%2F%2FC9URH7YuGmabjoGUThPC%2FNX%2F5rmpwteDLjcqqovJgazOEWz6Nl1H%2Fq1ZT14SKCfMmKMuwE7fr9eTOQfitbNi4d9ALxMSJJlmoEhYgEaPKSR8r%2FZAT6Ssx%2FP3WmsrBXrksdpB9fNcbxVg57wPs9Ktdgck2cPftAmGWyfVHDTKyHTZS%2BKgwwoEVx2RqrtWAN838d2xDo2MnvDZDPWwiuwUoisUqfvW6YxxLUG4Q3YoNKlSe0Rq9AG%2BMyZ56nrh8S8ilfyMSnV5VXmspUNHQ0wmsUjTaxvCCn5BzGc4o2ySWjYig%3D%3D"
-  const [isLoaded, setIsLoaded] = useState(false);
-
+const ShopCard = ({ shop }) => {
   return (
     <div className="relative">
-      {!isLoaded && <SkeletonLoader />}{" "}
-      {/* Show skeleton loader if not loaded */}
       <div
-        className={`relative bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 ${
-          isLoaded ? "" : "invisible"
-        }`}
+        className={`relative bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105`}
       >
         <div className="relative w-full h-56">
-          {" "}
-          {/* Set height to your desired value */}
           <Image
-            src={card.image}
-            alt={card.title}
+            src={'/images/coffeeshop.jpg'}
+            alt={shop.coffee_shop_name}
             className="object-cover transition-opacity duration-300"
             fill // Use fill instead of layout="responsive"
-            onLoad={() => setIsLoaded(true)} // Update state on load
-            onError={() => setIsLoaded(true)} // Also update state on error
           />
+
           {/* Rating at the top right */}
           <div className="absolute top-2 right-2 bg-white rounded-full px-2 py-1 shadow-md">
             <span className="text-yellow-500 font-poppins-bold">★</span>
             <span className="text-sm font-poppins text-[#4b4b4d] ml-1">
-              {card.rating}
+              {shop.rating}
             </span>
           </div>
           <div className="absolute bottom-2 left-2 bg-white rounded-full px-2 py-1 shadow-md">
-            <p className="text-sm font-poppins text-gray-600">{card.city}</p>
+            <p className="text-sm font-poppins text-gray-600">{shop.coffee_shop_city}</p>
           </div>
         </div>
 
         <div className="p-4">
           <p className="text-xl font-poppins-bold text-[#5f4429]">
-            {card.title}
+            {shop.coffee_shop_name}
           </p>
           <span className="text-xs font-poppins text-[#4b4b4d]">
-            {card.address}
+            {shop.coffee_shop_address}
           </span>
         </div>
       </div>
@@ -57,34 +41,48 @@ const CoffeeCard = ({ card }) => {
   );
 };
 
-export default function Explore() {
+async function getPopularShops() {
+    const res = await fetch(`${process.env.BASE_API_URL}/shops`, {
+      // Next.js can cache or revalidate this depending on your needs
+      cache: 'no-store' // or 'force-cache', or use `next: { revalidate: 60 }`
+    });
+
+    if (!res.ok) throw new Error('Failed to fetch popular shops');
+
+    return res.json();
+  }
+
+export default async function Explore() {
   // Sample data for demonstration
-  const cards = [
-    {
-      id: 1,
-      title: "Dream Coffee Shop",
-      image: coffeeShop,
-      rating: 4.5,
-      address: "Pinagsama Village EP Housing 2",
-      city: "Taguig",
-    },
-    {
-      id: 2,
-      title: "Malikhain Coffee Shop",
-      image: coffeeShop,
-      rating: 4.7,
-      address: "Pinagsama Village EP Housing 2",
-      city: "Makati",
-    },
-    {
-      id: 3,
-      title: "Rooftop Coffee Shop",
-      image: coffeeShop,
-      rating: 4.3,
-      address: "Pinagsama Village EP Housing 2",
-      city: "San Juan",
-    },
-  ];
+  // const cards = [
+  //   {
+  //     id: 1,
+  //     title: "Dream Coffee Shop",
+  //     image: coffeeShop,
+  //     rating: 4.5,
+  //     address: "Pinagsama Village EP Housing 2",
+  //     city: "Taguig",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Malikhain Coffee Shop",
+  //     image: coffeeShop,
+  //     rating: 4.7,
+  //     address: "Pinagsama Village EP Housing 2",
+  //     city: "Makati",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Rooftop Coffee Shop",
+  //     image: coffeeShop,
+  //     rating: 4.3,
+  //     address: "Pinagsama Village EP Housing 2",
+  //     city: "San Juan",
+  //   },
+  // ];
+
+  const {data} = await getPopularShops();
+  // console.log('data', data)
 
   return (
     <div className="bg-[#FAF7F2] flex flex-col min-h-screen">
@@ -112,8 +110,8 @@ export default function Explore() {
             Popular Coffee Shops
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
-            {cards.map((card) => (
-              <CoffeeCard key={card.id} card={card} />
+            {data.map((shop) => (
+              <ShopCard key={shop.coffee_shop_uuid} shop={shop} />
             ))}
           </div>
         </section>

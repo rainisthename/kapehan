@@ -1,9 +1,9 @@
 "use client"; // Keep this if you need client-side interactivity
-import FilterBar from "../components/FilterBar";
-import CoffeeCard from "../components/CoffeeCard";
+import FilterBar from "../../components/FilterBar";
+import CoffeeCard from "../../components/CoffeeCard";
 import coffeeShop from "../../../public/images/coffeeshop.jpg";
 import Link from "next/link"; // Import Link
-import {getShops} from '../data/shopsAPiSlice'
+import {getShops} from '../../data/shopsAPiSlice'
 import {useState, useEffect} from 'react'
 export default function Explore() {
 

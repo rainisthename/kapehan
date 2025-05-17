@@ -13,11 +13,11 @@ import {
 import { SiSocketdotio } from "react-icons/si";
 import { MdOutlineBathroom } from "react-icons/md";
 
-import ReviewList from "../../components/Reviews";
+import ReviewList from "../../../../components/Reviews";
 import { FaClock } from "react-icons/fa6";
-import MapComponent from "../../components/GoogleMaps";
-import Modal from "../../components/RatingModal";
-import AuthModal from "../../components/AuthModal";
+import MapComponent from "../../../../components/GoogleMaps";
+import Modal from "../../../../components/RatingModal";
+import AuthModal from "../../../../components/AuthModal";
 import useFirebaseAuth from "@/hooks/useFirebaseAuth";
 
 const drinks = [

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 // import Logo from "@/components/Logo";
-import Links from "../components/Links";
+import Links from "./Links";
 import { pageEndpoints } from "../config/config";
 
 const Navbar = () => {
