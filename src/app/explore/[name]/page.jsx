@@ -2,7 +2,7 @@
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image"; // Optional if you want to use Next.js Image component
-import coffeeShop from "../../../../public/images/coffeeshop.jpg";
+// import coffeeShop from "../../../../public/images/coffeeshop.jpg";
 import {
   FaWifi,
   FaParking,
@@ -13,12 +13,12 @@ import {
 import { SiSocketdotio } from "react-icons/si";
 import { MdOutlineBathroom } from "react-icons/md";
 
-import ReviewList from "../../../../components/Reviews";
+import ReviewList from "@/components/Reviews";
 import { FaClock } from "react-icons/fa6";
-import MapComponent from "../../../../components/GoogleMaps";
-import Modal from "../../../../components/RatingModal";
-import AuthModal from "../../../../components/AuthModal";
-import useFirebaseAuth from "@/hooks/useFirebaseAuth";
+import MapComponent from "@/components/GoogleMaps";
+import Modal from "@/components/RatingModal";
+import AuthModal from "@/components/AuthModal";
+// import useFirebaseAuth from "@/hooks/useFirebaseAuth";
 
 const drinks = [
   {
@@ -87,51 +87,21 @@ const desserts = [
   // Add more dessert items here...
 ];
 
-const parallaxStyle = {
-  backgroundImage: `url(${coffeeShop.src})`, // Use .src when using the Image import
-  minHeight: "60vh",
-  backgroundAttachment: "fixed",
-  backgroundPosition: "top",
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
-  position: "relative",
-};
-
-const overlayStyle = {
-  backgroundColor: "rgba(0, 0, 0, 0.7)",
-  position: "absolute",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-};
-
-const centerTextStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  textAlign: "center",
-};
-
 const latitude = 14.5995; // Example latitude
 const longitude = 120.9842; // Example longitude
 
 export default function CoffeeShopDetail() {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { user } = useFirebaseAuth();
-  // const token = getIdToken(user)
   const [showModal, setShowModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [activeTab, setActiveTab] = useState("coffee"); // State to manage the active tab
   const { name } = useParams();
 
   useEffect(() => {
-    if(showAuthModal && user) {
+    if(showAuthModal) {
       setShowAuthModal(false);
       setShowModal(true);
     }
-  }, [showAuthModal, user])
+  }, [showAuthModal])
   
 
   const handleCloseModal = () => {
@@ -144,9 +114,9 @@ export default function CoffeeShopDetail() {
 
   return (
     <div className="min-h-screen bg-[#F6F6F6]">
-      <div className="parallax" style={parallaxStyle}>
-        <div style={overlayStyle}></div>
-        <div style={centerTextStyle} className="w-[90%] md:w-[60%]">
+      <div className="min-h-[60vh] bg-fixed bg-top bg-no-repeat bg-cover relative" style={{ backgroundImage: "url(/images/coffeeshop.jpg)" }}>
+        <div className="absolute top-0 left-0 w-full h-full bg-black/70"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-[90%] md:w-[60%]">
           <p className="text-4xl md:text-5xl lg:text-8xl font-poppins-bold text-white pb-5">
             {formattedName}
           </p>

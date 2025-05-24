@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import maps from "../../../public/images/vector-maps-street.jpg";
-import CoffeeCard from "../../../components/CoffeeCard";
+import CoffeeCard from "@/components/CoffeeCard";
 import coffeeShop from "../../../public/images/coffeeshop.jpg"; // Replace with your actual image paths
 
 const CoffeeShopLocator = ({ card }) => {

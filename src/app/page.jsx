@@ -4,53 +4,62 @@ import Link from "next/link";
 
 const ShopCard = ({ shop }) => {
   return (
-    <div className="relative">
-      <div
-        className={`relative bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105`}
-      >
-        <div className="relative w-full h-56">
-          <Image
-            src={'/images/coffeeshop.jpg'}
-            alt={shop.coffee_shop_name}
-            className="object-cover transition-opacity duration-300"
-            fill // Use fill instead of layout="responsive"
-          />
+    <Link href={`/explore/${shop.coffee_shop_uuid}`}>
+      <div className="relative">
+        <div
+          className={`relative bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105`}
+        >
+          <div className="relative w-full h-56">
+            <Image
+              src={'/images/coffeeshop.jpg'}
+              alt={shop.coffee_shop_name}
+              className="object-cover transition-opacity duration-300"
+              fill // Use fill instead of layout="responsive"
+            />
 
-          {/* Rating at the top right */}
-          <div className="absolute top-2 right-2 bg-white rounded-full px-2 py-1 shadow-md">
-            <span className="text-yellow-500 font-poppins-bold">★</span>
-            <span className="text-sm font-poppins text-[#4b4b4d] ml-1">
-              {shop.rating}
+            {/* Rating at the top right */}
+            <div className="absolute top-2 right-2 bg-white rounded-full px-2 py-1 shadow-md">
+              <span className="text-yellow-500 font-poppins-bold">★</span>
+              <span className="text-sm font-poppins text-[#4b4b4d] ml-1">
+                {shop.rating}
+              </span>
+            </div>
+            <div className="absolute bottom-2 left-2 bg-white rounded-full px-2 py-1 shadow-md">
+              <p className="text-sm font-poppins text-gray-600">{shop.coffee_shop_city}</p>
+            </div>
+          </div>
+
+          <div className="p-4">
+            <p className="text-xl font-poppins-bold text-[#5f4429]">
+              {shop.coffee_shop_name}
+            </p>
+            <span className="text-xs font-poppins text-[#4b4b4d]">
+              {shop.coffee_shop_address}
             </span>
           </div>
-          <div className="absolute bottom-2 left-2 bg-white rounded-full px-2 py-1 shadow-md">
-            <p className="text-sm font-poppins text-gray-600">{shop.coffee_shop_city}</p>
-          </div>
-        </div>
-
-        <div className="p-4">
-          <p className="text-xl font-poppins-bold text-[#5f4429]">
-            {shop.coffee_shop_name}
-          </p>
-          <span className="text-xs font-poppins text-[#4b4b4d]">
-            {shop.coffee_shop_address}
-          </span>
         </div>
       </div>
-    </div>
+    </Link>
+
   );
 };
 
 async function getPopularShops() {
-    const res = await fetch(`${process.env.BASE_API_URL}/shops`, {
+  try {
+    const res = await fetch(`${process.env.API_BASE_URL}/shops`, {
       // Next.js can cache or revalidate this depending on your needs
-      cache: 'no-store' // or 'force-cache', or use `next: { revalidate: 60 }`
+      // cache: 'no-store' // or 'force-cache', or use `next: { revalidate: 60 }`
     });
 
     if (!res.ok) throw new Error('Failed to fetch popular shops');
 
     return res.json();
+
+  } catch (error) {
+    console.error('Error fetching popular shops:', error);
+    return { data: [] }; // Return an empty array in case of error
   }
+}
 
 export default async function Explore() {
   // Sample data for demonstration
@@ -81,7 +90,7 @@ export default async function Explore() {
   //   },
   // ];
 
-  const {data} = await getPopularShops();
+  const { data } = await getPopularShops();
   // console.log('data', data)
 
   return (

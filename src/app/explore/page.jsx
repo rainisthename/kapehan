@@ -1,40 +1,25 @@
-"use client"; // Keep this if you need client-side interactivity
-import FilterBar from "../../components/FilterBar";
-import CoffeeCard from "../../components/CoffeeCard";
-import coffeeShop from "../../../public/images/coffeeshop.jpg";
-import Link from "next/link"; // Import Link
-import {getShops} from '../../data/shopsAPiSlice'
-import {useState, useEffect} from 'react'
-export default function Explore() {
+import FilterBar from "@/components/FilterBar";
+import CoffeeCard from "@/components/CoffeeCard";
+import Link from "next/link";
+// import {useState, useEffect} from 'react'
 
-  const [shops, setShops] = useState([]);
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false); // Flag to track loading state
+async function getShops() {
+  try {
+    const res = await fetch(`${process.env.API_BASE_URL}/shops`)
+    return res.json()
+  } catch (error) {
+    console.error("Error fetching shops:", error);
+    return [];
+  }
+}
 
-  useEffect(() => {
-    const fetchShops = async () => {
-      if (isLoaded) return; // Prevent re-fetch if already loaded
-
-      const result = await getShops();
-
-      if (result.error) {
-        setError(result.error); // Handle error
-      } else {
-        setShops(result); // Set shops data
-      }
-
-      setIsLoaded(true); // Mark as loaded
-    };
-
-    fetchShops();
-  }, [isLoaded]); // Add isLoaded as dependency
-
-
+export default async function Explore() {
+  const shops = await getShops();
   const cards = [
     {
       id: 1,
       title: "Dream Coffee Shop",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.5,
       address: "Pinagsama Village EP Housing 2",
       city: "Taguig",
@@ -42,7 +27,7 @@ export default function Explore() {
     {
       id: 2,
       title: "Malikhain Coffee Shop",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.7,
       address: "Pinagsama Village EP Housing 2",
       city: "Makati",
@@ -50,7 +35,7 @@ export default function Explore() {
     {
       id: 3,
       title: "Rooftop Coffee Shop",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.3,
       address: "Pinagsama Village EP Housing 2",
       city: "San Juan",
@@ -58,7 +43,7 @@ export default function Explore() {
     {
       id: 4,
       title: "Central Perk",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.9,
       address: "Poblacion, Makati",
       city: "Makati",
@@ -66,7 +51,7 @@ export default function Explore() {
     {
       id: 5,
       title: "Café de Luna",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.2,
       address: "Fort Bonifacio Global City",
       city: "Taguig",
@@ -74,7 +59,7 @@ export default function Explore() {
     {
       id: 6,
       title: "Java Dreams",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.8,
       address: "Makati Avenue",
       city: "Makati",
@@ -82,7 +67,7 @@ export default function Explore() {
     {
       id: 7,
       title: "Sunset Brew",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.6,
       address: "SM Mall of Asia",
       city: "Pasay",
@@ -90,7 +75,7 @@ export default function Explore() {
     {
       id: 8,
       title: "Green Beans Café",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.4,
       address: "Quezon Memorial Circle",
       city: "Quezon City",
@@ -98,7 +83,7 @@ export default function Explore() {
     {
       id: 9,
       title: "Brewed Awakening",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.1,
       address: "Eastwood City",
       city: "Quezon City",
@@ -106,7 +91,7 @@ export default function Explore() {
     {
       id: 10,
       title: "The Daily Grind",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.7,
       address: "Taguig City",
       city: "Taguig",
@@ -114,7 +99,7 @@ export default function Explore() {
     {
       id: 11,
       title: "Café Aroma",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.5,
       address: "Rizal Street",
       city: "Makati",
@@ -122,7 +107,7 @@ export default function Explore() {
     {
       id: 12,
       title: "Brew Lab",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.3,
       address: "Pioneer Street",
       city: "Mandaluyong",
@@ -130,7 +115,7 @@ export default function Explore() {
     {
       id: 13,
       title: "Bean Scene",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.8,
       address: "Greenhills",
       city: "San Juan",
@@ -138,7 +123,7 @@ export default function Explore() {
     {
       id: 14,
       title: "Mug Life",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.6,
       address: "Cubao",
       city: "Quezon City",
@@ -146,7 +131,7 @@ export default function Explore() {
     {
       id: 15,
       title: "Cafe Vintage",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.4,
       address: "Makati Central",
       city: "Makati",
@@ -154,7 +139,7 @@ export default function Explore() {
     {
       id: 16,
       title: "Mocha Breeze",
-      image: coffeeShop,
+      image: '/images/coffeeshop.jpg',
       rating: 4.2,
       address: "Mall of Asia",
       city: "Pasay",
